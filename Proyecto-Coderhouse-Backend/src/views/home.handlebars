@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos</title>
+</head>
+<body>
+  <h1>Listado de Productos</h1>
+  <ul>
+    {{#each products}}
+    <li>
+      <h2>{{title}}</h2>
+      <p>{{description}}</p>
+      <p>Precio: ${{price}}</p>
+      <p>Código: {{code}}</p>
+      <p>Stock: {{stock}}</p>
+      {{#if status}}
+        <p>Estado: Disponible</p>
+      {{else}}
+        <p>Estado: No disponible</p>
+      {{/if}}
+      <img src="{{thumbnail}}" alt="Imagen del producto">
+    </li>
+    {{/each}}
+  </ul>
+</body>
+</html>

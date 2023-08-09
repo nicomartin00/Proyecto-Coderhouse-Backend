@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos en Tiempo Real</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    socket.on('connect', () => {
+      console.log('Cliente conectado al servidor de sockets');
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Cliente desconectado del servidor de sockets');
+    });
+
+    socket.on('updateProducts', (products) => {
+      const productsList = document.getElementById('products-list');
+      productsList.innerHTML = '';
+
+      products.forEach((product) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <h2>${product.title}</h2>
+          <p>${product.description}</p>
+          <p>Precio: $${product.price}</p>
+          <p>Código: ${product.code}</p>
+          <p>Stock: ${product.stock}</p>
+          ${product.status ? '<p>Estado: Disponible</p>' : '<p>Estado: No disponible</p>'}
+          <img src="${product.thumbnail}" alt="Imagen del producto">
+        `;
+        productsList.appendChild(li);
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>Listado de Productos en Tiempo Real</h1>
+  <ul id="products-list">
+  </ul>
+</body>
+</html>
