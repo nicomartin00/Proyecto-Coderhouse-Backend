@@ -3,21 +3,6 @@ const ProductsController = require('../controllers/ProductsController');
 const productsRouter = express.Router();
 const productsController = new ProductsController('products.json');
 
-// Obtener todos los productos o un número específico de productos con el límite
-productsRouter.get('/', async (req, res) => {
-  const { limit } = req.query;
-  try {
-    const products = await productsController.getProducts();
-    let limitedProducts = products;
-    if (limit) {
-      limitedProducts = products.slice(0, parseInt(limit, 10));
-    }
-    res.json(limitedProducts);
-  } catch (error) {
-    res.status(500).json({ error: 'Error al obtener los productos' });
-  }
-});
-
 // Obtener un producto por su ID
 productsRouter.get('/:pid', async (req, res) => {
   const productId = parseInt(req.params.pid, 10);
