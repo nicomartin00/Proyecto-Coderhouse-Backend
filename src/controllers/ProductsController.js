@@ -3,16 +3,15 @@ const path = require('path');
 
 class ProductsController {
   constructor(productsPath) {
-    this.productsPath = path.join(__dirname, '..', '/data/', productsPath);
+    this.productsPath = path.join(__dirname, '..', '..', 'data', productsPath);
   }
 
   async getProducts() {
     try {
       const data = await fs.readFile(this.productsPath, 'utf8');
-      console.log(data);
       return JSON.parse(data);
     } catch (error) {
-      throw new Error('Error al obtener los productos');
+      throw new Error('Error al obtener los productos', error);
     }
   }
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ProductsController = require('../controllers/ProductsController');
+const ProductsController = require('../controllers/productsController');
 
 const productsController = new ProductsController('products.json');
 
@@ -8,7 +8,6 @@ const productsController = new ProductsController('products.json');
 router.get('/', async (req, res) => {
   try {
     const products = await productsController.getProducts();
-    console.log(products);
     res.render('home', { products });
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener los productos' });
@@ -16,8 +15,13 @@ router.get('/', async (req, res) => {
 });
 
 // Ruta para la vista de tiempo real
-router.get('/realTimeProducts', (req, res) => {
-  res.render('realTimeProducts', { products: [] });
+router.get('/realTimeProducts', async (req, res) => {
+  try {
+    const products = await productsController.getProducts();
+    res.render('realTimeProducts', { products });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener los productos en tiempo real' });
+  }
 });
 
 module.exports = router;

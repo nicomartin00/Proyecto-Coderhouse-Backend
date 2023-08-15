@@ -4,8 +4,8 @@ class ProductManager {
   constructor() {
     this.products = [];
     this.currentId = 1;
-    this.productsPath = "products.json";
-    this.cartsPath = "carrito.json";
+    this.productsPath = "../data/products.json";
+    this.cartsPath = "../data/carrito.json";
     this.loadProductsAsync();
   }
 

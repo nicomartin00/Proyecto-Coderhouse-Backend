@@ -1,7 +1,7 @@
 const express = require('express');
+const cartsRouter = express.Router();
 const CartsController = require('../controllers/CartsController');
 
-const cartsRouter = express.Router();
 const cartsController = new CartsController('carts.json');
 
 // Obtener un carrito por su ID

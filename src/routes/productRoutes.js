@@ -1,10 +1,26 @@
 const express = require('express');
-const ProductsController = require('../controllers/ProductsController');
-const productsRouter = express.Router();
+const router = express.Router();
+const ProductsController = require('../controllers/productsController');
+
 const productsController = new ProductsController('products.json');
 
+// Obtener todos los productos o un número específico de productos con el límite
+router.get('/', async (req, res) => {
+  const { limit } = req.query;
+  try {
+    const products = await productsController.getProducts();
+    let limitedProducts = products;
+    if (limit) {
+      limitedProducts = products.slice(0, parseInt(limit, 10));
+    }
+    res.json(limitedProducts);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener los productos' });
+  }
+});
+
 // Obtener un producto por su ID
-productsRouter.get('/:pid', async (req, res) => {
+router.get('/:pid', async (req, res) => {
   const productId = parseInt(req.params.pid, 10);
   try {
     const product = await productsController.getProductById(productId);
@@ -19,7 +35,7 @@ productsRouter.get('/:pid', async (req, res) => {
 });
 
 // Agregar un nuevo producto
-productsRouter.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
   const newProduct = req.body;
   try {
     await productsController.addProduct(newProduct);
@@ -30,7 +46,7 @@ productsRouter.post('/', async (req, res) => {
 });
 
 // Actualizar un producto por su ID
-productsRouter.put('/:pid', async (req, res) => {
+router.put('/:pid', async (req, res) => {
   const productId = parseInt(req.params.pid, 10);
   const updatedFields = req.body;
   try {
@@ -42,7 +58,7 @@ productsRouter.put('/:pid', async (req, res) => {
 });
 
 // Eliminar un producto por su ID
-productsRouter.delete('/:pid', async (req, res) => {
+router.delete('/:pid', async (req, res) => {
   const productId = parseInt(req.params.pid, 10);
   try {
     await productsController.deleteProduct(productId);
@@ -52,4 +68,4 @@ productsRouter.delete('/:pid', async (req, res) => {
   }
 });
 
-module.exports = productsRouter;
+module.exports = router;
